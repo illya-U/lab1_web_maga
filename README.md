@@ -1,114 +1,83 @@
-# Project: Currency Exchange Website
+# Currency Exchange Web Application
 
-## Description
+This project is a web application for currency conversion, developed as part of the "Web Application Development Technologies" and "User Interface Programming" courses.
 
-This project is a web application for currency conversion. Users can log in, view their balance, and check the last 5 transactions. The project uses the following technologies:
+## 🚀 Features
 
-- **Frontend:** React, Vite
-- **Backend:** Django (API)
-- **API:** Exchanger API (OpenAPI 3.0.3)
+- **User Authentication**: Register, log in, and log out.
+- **Currency Conversion**: Select currency, input amount, and get the result.
+- **Transaction History**: View balance and the last five transactions.
 
-## Functionality
+## 🛠️ Technologies
 
-1. **Authentication and Registration**
-    - Users can log in, register, and log out.
-    - Authentication is done via a token passed in the `Authorization` header.
+- **Frontend**: React + Vite
+- **Backend**: Django REST Framework
+- **Exchange Rates API**: Integrated with an external service (OpenAPI 3.0.3)
 
-2. **Currency Conversion**
-    - Users can select currencies, enter an amount, and get the conversion result.
-    - Each conversion operation is recorded as a transaction.
+## 🔧 Setup
 
-3. **Viewing Balance and Transactions**
-    - Users can view their balance and the last 5 transactions.
+### 1. Clone the repository
 
-## API
+```bash
+git clone https://github.com/illya-U/lab1_web_maga.git
+cd lab1_web_maga
+```
 
-The project uses the Exchanger API, the definition of which is provided below.
+### 2. Backend Setup
 
-### Endpoints
+```bash
+cd back_end/lab1
+python -m venv venv
+```
 
-- **POST /exchanger/login/**  
-  User login. Returns a token for subsequent requests.
+Activate the virtual environment:
 
-- **POST /exchanger/logout/**  
-  Logs the user out.
+- Windows:
+  ```bash
+  venv\Scripts\activate
+  ```
+- macOS/Linux:
+  ```bash
+  source venv/bin/activate
+  ```
 
-- **POST /exchanger/register/**  
-  User registration.
+Install dependencies and run the server:
 
-- **GET /exchanger/users/**  
-  Get the list of users.
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
 
-- **GET /exchanger/users/{id}/**  
-  Get user information by their ID.
+### 3. Frontend Setup
 
-- **POST /exchanger/users/add_transaction/**  
-  Add a transaction.
+```bash
+cd ../../front_end/lab1
+npm install
+npm run dev
+```
 
-- **GET /exchanger/users/transactions/**  
-  Get the list of the user’s transactions.
+## 🌐 Usage
 
-### Schemas
+- Open your browser and go to `http://localhost:3000`
+- Register or log in
+- Perform currency conversions
+- Monitor your balance and recent transactions
 
-- **User**
-  - `id` (integer) - User ID.
-  - `username` (string) - User's name.
-  - `email` (string) - User's email.
-  - `gender` (string) - User's gender.
-  - `birth_date` (string) - User's birth date.
-  - `transactions` (array) - List of transactions.
+## 📡 API Endpoints
 
-- **Transaction**
-  - `amount` (string) - Transaction amount.
-  - `from_currency` (string) - Currency being exchanged from.
-  - `to_currency` (string) - Currency being exchanged to.
-  - `timestamp` (string) - Transaction timestamp.
+| Method | URL                         | Description                                |
+|--------|-----------------------------|--------------------------------------------|
+| POST   | `/exchanger/login/`         | User login, returns a token                |
+| POST   | `/exchanger/register/`      | Register a new user                        |
+| GET    | `/exchanger/balance/`       | Get the current user balance               |
+| GET    | `/exchanger/transactions/`  | Get the latest 5 transactions              |
+| POST   | `/exchanger/convert/`       | Convert currency (requires amount & types) |
 
-## Setup Instructions
+## 🤝 Contributing
 
-### Installation
+Pull requests are welcome! Fork the repository and submit your improvements.
 
-1. Clone the repository:
+## 📄 License
 
-    ```bash
-    git clone https://github.com/illya-U/lab1_web_maga.git
-    ```
-
-2. Navigate to the project directory:
-
-    ```bash
-    cd exchanger
-    ```
-
-3. Install dependencies:
-
-    ```bash
-    npm install
-    ```
-
-4. Start the project:
-
-    ```bash
-    npm run dev
-    ```
-
-### Configuration
-
-For the project to work correctly, you need to configure the environment variables.
-
-Create a `.env` file in the root of the project and add the following lines:
-
-VITE_EXCHANGER_API_HUB_KEY=your_api_key VITE_DJANGO_HOST=http://your-django-host.com
-
-## Technologies Used
-
-- **React** — For building the user interface.
-- **Vite** — For fast bundling and development.
-- **Django** — For the backend, handling API requests.
-- **Exchanger API** — External API for currency exchange.
-
-## Notes
-
-- The application uses the Exchanger API to get currency exchange rates.
-- All requests are authenticated via a token, which must be passed in the header of each request.
-- The interface includes a feature to view the user's last 5 transactions.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
