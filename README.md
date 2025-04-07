@@ -77,7 +77,3 @@ npm run dev
 ## 🤝 Contributing
 
 Pull requests are welcome! Fork the repository and submit your improvements.
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
