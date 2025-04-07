@@ -1,0 +1,53 @@
+.user-profile-container {
+    background: #1c1c1c;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 800px;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .user-profile-container h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  
+  .user-profile-container h3 {
+    font-size: 20px;
+    margin: 20px 0 10px;
+    color: #ccc;
+  }
+  
+  .transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    color: white;
+    font-size: 15px;
+  }
+  
+  .transactions-table th,
+  .transactions-table td {
+    border: 1px solid #333;
+    padding: 12px;
+  }
+  
+  .transactions-table th {
+    background-color: #2c2c2c;
+    color: #fff;
+  }
+  
+  .transactions-table tr:nth-child(even) {
+    background-color: #262626;
+  }
+  
+  .transactions-table tr:hover {
+    background-color: #333;
+  }
+  
