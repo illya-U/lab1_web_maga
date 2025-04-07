@@ -71,7 +71,7 @@ The project uses the Exchanger API, the definition of which is provided below.
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-repo/exchanger.git
+    git clone https://github.com/illya-U/lab1_web_maga.git
     ```
 
 2. Navigate to the project directory:
@@ -100,11 +100,6 @@ Create a `.env` file in the root of the project and add the following lines:
 
 VITE_EXCHANGER_API_HUB_KEY=your_api_key VITE_DJANGO_HOST=http://your-django-host.com
 
-## Project Structure
-
-. ├── src/ │ ├── components/ │ │ ├── Exchanger.jsx # Currency exchange component │ │ ├── AboutApp.jsx # Application description │ │ └── ... │ ├── common/ │ │ └── AuthService.jsx # Service for authentication │ ├── App.jsx # Main component │ └── index.js # Entry point ├── public/ │ └── index.html ├── package.json └── .env # Environment variables
-
-
 ## Technologies Used
 
 - **React** — For building the user interface.
@@ -117,7 +112,3 @@ VITE_EXCHANGER_API_HUB_KEY=your_api_key VITE_DJANGO_HOST=http://your-django-host
 - The application uses the Exchanger API to get currency exchange rates.
 - All requests are authenticated via a token, which must be passed in the header of each request.
 - The interface includes a feature to view the user's last 5 transactions.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
