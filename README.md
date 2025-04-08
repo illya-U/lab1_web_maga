@@ -3,8 +3,8 @@
 This project is a web application for currency conversion, developed as part of the "Web Application Development Technologies" and "User Interface Programming" courses.
 
 ## Report 
-- **back-end: https://docs.google.com/document/d/1fDuWsE4gwMQh1DHbbrO0_35mG_rzxu5MyXM4RII5yAE/edit?tab=t.0
-- **front-end: https://docs.google.com/document/d/1zUafASHgA-tg97-Wg30iGpV7GukJzVrEqqmTBSTlVgg/edit?tab=t.0
+- **back-end**: https://docs.google.com/document/d/1fDuWsE4gwMQh1DHbbrO0_35mG_rzxu5MyXM4RII5yAE/edit?tab=t.0
+- **front-end**: https://docs.google.com/document/d/1zUafASHgA-tg97-Wg30iGpV7GukJzVrEqqmTBSTlVgg/edit?tab=t.0
 
 ## Made by Illia Ustymenko KV-41mp lab1 Web Application Development Technology/Web Interface Programming
 
