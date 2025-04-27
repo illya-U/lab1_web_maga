@@ -20,4 +20,4 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate --noinput && gunicorn lab1.wsgi:application --bind 0.0.0.0:${PORT}"]
+CMD ["sh", "-c", "python manage.py makemigrations --noinput && python manage.py migrate --noinput && gunicorn lab1.wsgi:application --bind 0.0.0.0:${PORT}"]
