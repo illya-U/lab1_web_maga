@@ -9,8 +9,11 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t1urc(&n^84as8rz)(5eu^(wwoa-%0$qd(#)_b6#_j*0-$lpy6'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-default-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,7 +57,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -129,7 +131,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -142,41 +143,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 
-# CORS_ALLOW_ALL_ORIGINS = True
-
-# CSRF_COOKIE_NAME = "csrftoken"
-# SESSION_COOKIE_NAME = "sessionid"
-
-# CSRF_COOKIE_NAME = "X-CSRFToken"
-# SESSION_COOKIE_NAME = "X-SessionID"
-#
-# SESSION_COOKIE_HTTPONLY = False
-# CSRF_COOKIE_HTTPONLY = False  # CSRF должен быть доступен из JavaScript
-# CSRF_COOKIE_SAMESITE = 'Lax'  # или 'None' с Secure=True для кросс-доменных запросов
-# SESSION_COOKIE_SAMESITE = 'Lax'  # или 'None' с Secure=True для кросс-доменных запросов
-#
-# # Настройки CORS для работы с cookies
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # или порт вашего React-приложения
-]
-#
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:5173",
-# ]
-#
-# from corsheaders.defaults import default_headers
-#
-# CORS_ALLOW_HEADERS = list(default_headers) + [
-#     'X-CSRFToken',
-#     'X-SessionID',
-#     "x-csrf-token",
-#     "session-id",
-#     CSRF_COOKIE_NAME,
-#     SESSION_COOKIE_NAME,
-# ]
-#
-#
+
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
