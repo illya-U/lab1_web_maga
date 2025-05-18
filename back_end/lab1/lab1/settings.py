@@ -41,20 +41,22 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'exchanger'
+    'drf_spectacular',
+    'exchanger',
+    'channels'
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -65,6 +67,13 @@ AUTHENTICATION_BACKENDS = [
     'exchanger.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Exchanger API',
+    'DESCRIPTION': 'Цей додаток надає API для роботи з переглядом історії коритсувачей.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 ROOT_URLCONF = 'lab1.urls'
 
@@ -85,7 +94,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'lab1.wsgi.application'
+# WSGI_APPLICATION = 'lab1.wsgi.application'
+ASGI_APPLICATION = 'lab1.asgi.application'
 
 
 # Database
@@ -97,6 +107,13 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
+
 
 
 # Password validation
@@ -142,41 +159,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 
-# CORS_ALLOW_ALL_ORIGINS = True
-
-# CSRF_COOKIE_NAME = "csrftoken"
-# SESSION_COOKIE_NAME = "sessionid"
-
-# CSRF_COOKIE_NAME = "X-CSRFToken"
-# SESSION_COOKIE_NAME = "X-SessionID"
-#
-# SESSION_COOKIE_HTTPONLY = False
-# CSRF_COOKIE_HTTPONLY = False  # CSRF должен быть доступен из JavaScript
-# CSRF_COOKIE_SAMESITE = 'Lax'  # или 'None' с Secure=True для кросс-доменных запросов
-# SESSION_COOKIE_SAMESITE = 'Lax'  # или 'None' с Secure=True для кросс-доменных запросов
-#
-# # Настройки CORS для работы с cookies
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # или порт вашего React-приложения
 ]
-#
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:5173",
-# ]
-#
-# from corsheaders.defaults import default_headers
-#
-# CORS_ALLOW_HEADERS = list(default_headers) + [
-#     'X-CSRFToken',
-#     'X-SessionID',
-#     "x-csrf-token",
-#     "session-id",
-#     CSRF_COOKIE_NAME,
-#     SESSION_COOKIE_NAME,
-# ]
-#
-#
+
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
