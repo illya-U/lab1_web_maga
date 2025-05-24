@@ -5,7 +5,7 @@ This project is a web application for currency conversion, developed as part of 
 ## Report 
 - **back-end**: https://docs.google.com/document/d/105TsEPHxgEpClYJ7GRB-QpSZSrviQA32SQhvEBYdOP0/edit?tab=t.0
 
-## Made by Illia Ustymenko KV-41mp lab1 Web Application Development Technology/Web Interface Programming
+## Made by Illia Ustymenko KV-41mp lab2 Organizing collaboration between Web application users via web sockets for subject Web Application Development Technology
 
 ---
 
