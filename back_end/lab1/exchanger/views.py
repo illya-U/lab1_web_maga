@@ -13,6 +13,8 @@ from .models import User
 from .serializers import UserSerializer, TransactionSerializer, TransactionCreateSerializer
 from .serializers import RegisterSerializer, LoginSerializer
 
+from exchanger.celery.email_tasks import send_registration_email
+
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
@@ -55,6 +57,7 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            send_registration_email.delay(user.email, user.username)
             return Response({"user": serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
