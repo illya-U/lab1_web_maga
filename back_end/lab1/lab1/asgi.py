@@ -14,7 +14,7 @@ from channels.routing import URLRouter, ProtocolTypeRouter
 from django.core.asgi import get_asgi_application
 
 from exchanger.routing import websocket_urlpatterns
-from lab1.authorization_middleware.HeaderTokenAuthMiddlewareStack import HeaderTokenAuthMiddlewareStack
+from lab1.authorization_middleware.QueryStringTokenAuthMiddlewareStack import QueryStringTokenAuthMiddlewareStack
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lab1.settings")
 django.setup()
@@ -23,6 +23,6 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        "websocket": HeaderTokenAuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
+        "websocket": QueryStringTokenAuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
     }
 )
