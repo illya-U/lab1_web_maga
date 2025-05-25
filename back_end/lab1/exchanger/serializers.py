@@ -7,7 +7,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'gender', 'birth_date']
+        fields = ["id", "username", "email", "password", "gender", "birth_date"]
 
     def create(self, validated_data):
         return self.Meta.model.objects.create_user(**validated_data)
@@ -21,18 +21,18 @@ class LoginSerializer(serializers.Serializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ['amount', 'from_currency', 'to_currency', 'timestamp']
+        fields = ["amount", "from_currency", "to_currency", "timestamp"]
 
 
 class TransactionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ['amount', 'from_currency', 'to_currency']
+        fields = ["amount", "from_currency", "to_currency"]
 
     def create(self, validated_data):
-        user = self.context['user']
+        user = self.context["user"]
         transaction = Transaction.objects.create(user=user, **validated_data)
-        transactions = Transaction.objects.filter(user=user).order_by('-timestamp')
+        transactions = Transaction.objects.filter(user=user).order_by("-timestamp")
         if transactions.count() > 5:
             transactions.last().delete()
         return transaction
@@ -43,4 +43,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'gender', 'birth_date', 'transactions']
+        fields = ["id", "username", "email", "gender", "birth_date", "transactions"]
+
+
+class TaskSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    execution_time = serializers.IntegerField()

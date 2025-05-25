@@ -10,10 +10,11 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 
 from .models import User
-from .serializers import UserSerializer, TransactionSerializer, TransactionCreateSerializer
+from .serializers import UserSerializer, TransactionSerializer, TransactionCreateSerializer, TaskSerializer
 from .serializers import RegisterSerializer, LoginSerializer
 
 from exchanger.celery.email_tasks import send_registration_email
+from exchanger.celery.tasks import send_task
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -107,3 +108,15 @@ class LogoutView(APIView):
         async_to_sync(channel_layer.group_send)("online_users_group", {"type": "online_users_changed"})
 
         return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
+
+
+class SimulateLongTermLogicView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = TaskSerializer(data=request.data)
+
+        if serializer.is_valid():
+            send_task.delay(serializer.validated_data["name"], serializer.validated_data["execution_time"])
+            return Response({"user": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
