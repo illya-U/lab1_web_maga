@@ -3,9 +3,9 @@
 This project is a web application for currency conversion, developed as part of the "Web Application Development Technologies" and "User Interface Programming" courses.
 
 ## Report 
-- **back-end**: https://docs.google.com/document/d/105TsEPHxgEpClYJ7GRB-QpSZSrviQA32SQhvEBYdOP0/edit?tab=t.0
+- **back-end**: https://docs.google.com/document/d/1Zi8eypy3DLdGIKaP0_qUljpHj2DTBSxUjQf4H7ksrZk/edit?tab=t.0
 
-## Made by Illia Ustymenko KV-41mp lab2 Organizing collaboration between Web application users via web sockets for subject Web Application Development Technology
+## Made by Illia Ustymenko KV-41mp Computational and graphic work "Organization of asynchronous tasks Web applications" Development technology of Web applications
 
 ---
 
