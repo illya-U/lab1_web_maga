@@ -1,124 +1,231 @@
-# Currency Exchange Web Application
+# 📬 Currency Exchange Web Application — Async Tasks Edition
 
-This project is a web application for currency conversion, developed as part of the "Web Application Development Technologies" and "User Interface Programming" courses.
+This project is a full-featured web application for currency conversion and real-time task monitoring. It includes authentication, async processing with Celery, WebSocket-powered dashboards, and a React-based admin interface.
 
-## Report 
-- **back-end**: https://docs.google.com/document/d/1Zi8eypy3DLdGIKaP0_qUljpHj2DTBSxUjQf4H7ksrZk/edit?tab=t.0
+Developed for the courses:  
+**"Web Application Development Technologies"**  
+**"User Interface Programming"**
 
-## Made by Illia Ustymenko KV-41mp Computational and graphic work "Organization of asynchronous tasks Web applications" Development technology of Web applications
+---
+
+## 📄 Report
+
+- 📁 **Backend Report:** [Google Docs](https://docs.google.com/document/d/1Zi8eypy3DLdGIKaP0_qUljpHj2DTBSxUjQf4H7ksrZk/edit?tab=t.0)
+- 👤 **Author:** Illia Ustymenko, KV-41mp  
+  Computational and graphic project:  
+  _"Організація асинхронних задач у веб-застосунках"_
 
 ---
 
 ## 🚀 Features
 
-- **User Authentication:** Register, log in, and log out.
-- **Currency Conversion:** Select currency, input amount, and get the result.
-- **Transaction History:** View balance and the last five transactions.
-- **Real-time Transactions:** Instantly receive updates on your last 5 transactions in real-time using WebSocket (Django Channels).
+- 🔐 **User Authentication:** Register / Login / Logout with Token-based auth
+- 💱 **Currency Conversion:** Convert currency with balance deduction
+- 📊 **Transaction History:** See last 5 operations per user
+- 📡 **Real-Time Updates:**
+  - User's transaction list updates live via WebSocket  
+  - Admin sees online users live via WebSocket
+- 📨 **Async Email Sending:** Welcome email triggered via Celery task
+- ⏳ **Long-running Task Queue:** Emulates heavy logic with status tracking
+- 🧠 **Admin WebSocket Panel:**
+  - Real-time monitoring of all background email and logic tasks
+  - Built with **React + Vite**
+  - Tasks are color-coded by status (`queued`, `started`, `success`, `error`)
 
 ---
 
-## 🛠️ Technologies
+## 🛠️ Tech Stack
 
-- **Frontend:** React + Vite
-- **Backend:** Django REST Framework + Django Channels (WebSocket)
-- **Exchange Rates API:** Integrated with an external service (OpenAPI 3.0.3)
+| Layer        | Technology                             |
+|--------------|----------------------------------------|
+| **Frontend** | React + Vite + TailwindCSS             |
+| **Backend**  | Django REST Framework + Channels       |
+| **Async**    | Celery + Redis                         |
+| **Auth**     | DRF Tokens                             |
+| **Docs**     | DRF Spectacular (Swagger / ReDoc)      |
+| **Deployment** | Docker Compose                       |
 
 ---
 
-## 🔧 Setup
+## 💻 Admin React Panel
 
-### 1. Clone the repository
+A dedicated WebSocket-powered **admin interface** was created in the frontend.  
+It shows:
 
-```bash
-git clone https://github.com/illya-U/lab1_web_maga.git
-cd lab1_web_maga
+- All running and completed **email sending tasks**
+- Simulated **long tasks** (via `send_task`)  
+- Real-time updates via `ws://<your-backend-host>/ws/email-status/` and `ws://<your-backend-host>/ws/task_status/`
+- ✅ Colored table with:  
+  `Name`, `Execution time`, `Status`, `End time`
+
+---
+
+## 🔥 New Feature: Async Logic Task API
+
+You can now create long-running tasks using:
+
+```http
+POST /exchanger/long_task/
+Content-Type: application/json
+Authorization: Token <your-token>
+
+{
+  "name": "long_work",
+  "execution_time": 10
+}
 ```
 
-### 2. Backend Setup
+Each task is queued via Celery, and updates are pushed via WebSocket to `ws://<your-backend-host>/ws/task_status/`.
+
+---
+
+## 🐟 Docker Quickstart
 
 ```bash
-cd back_end/lab1
-python -m venv venv
+docker compose -f docker/docker-compose.yml -f docker/docker-compose.queues.yml up --build
 ```
 
-Activate the virtual environment:
-
-- Windows:
-  ```bash
-  venv\Scripts\activate
-  ```
-- macOS/Linux:
-  ```bash
-  source venv/bin/activate
-  ```
-
-Install dependencies and run the server:
+To shut it down:
 
 ```bash
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-# For full websocket support:
-uvicorn lab1.asgi:application --reload
+docker compose -f docker/docker-compose.yml -f docker/docker-compose.queues.yml down
 ```
 
-### 3. Frontend Setup
+---
+
+## 🌐 Frontend (Standalone Dev Mode)
 
 ```bash
-cd ../../front_end/lab1
+cd front_end/lab1
 npm install
 npm run dev
 ```
 
 ---
 
-## 🌐 Usage
+## 🧪 Usage
 
-- Open your browser and go to `http://localhost:3000`
-- Register or log in
-- Perform currency conversions
-- Monitor your balance and recent transactions (real-time updates if enabled)
-- Option for admin see count of active users
-
----
-
-## 📡 API Endpoints
-
-| Method | URL                          | Description                                |
-|--------|------------------------------|--------------------------------------------|
-| POST   | `/exchanger/login/`          | User login, returns a token                |
-| POST   | `/exchanger/register/`       | Register a new user                        |
-| GET    | `/exchanger/balance/`        | Get the current user balance               |
-| GET    | `/exchanger/transactions/`   | Get the latest 5 transactions              |
-| POST   | `/exchanger/convert/`        | Convert currency (requires amount & types) |
+1. Visit `http://<your-frontend-host>:3000`
+2. Register or Login
+3. Convert currency, check balance and history
+4. Trigger long tasks or email sending
+5. Admins can view task dashboards in real-time
 
 ---
 
-## 🔌 WebSocket Real-time Transactions
+## 📡 WebSocket API
 
-- **URL:** `ws://localhost:8000/ws/transactions/`
-- **Auth:** Pass your token in the `Authorization` header (`Token <your_token>`)
-- **Behavior:** After connecting, you will receive your latest 5 transactions. When you perform a new transaction, the list updates automatically in real time.
+### 👤 Online Users
 
-#### Example JS WebSocket client
+- **URL:** `ws://<your-backend-host>/ws/online/`
+- **Who:** Admin only
+- **Message Type:** `{"online_users": [...]}`
 
-```js
-const socket = new WebSocket('ws://localhost:8000/ws/transactions/');
+---
 
-socket.onopen = () => {
-  socket.send(JSON.stringify({})); // Optionally trigger sending transactions
-};
+### ↺ User Transactions
 
-socket.onmessage = (event) => {
-  const data = JSON.parse(event.data);
-  console.log('Latest transactions:', data.transactions);
-};
+- **URL:** `ws://<your-backend-host>/ws/transactions/`
+- **Who:** Logged-in users
+- **Auth:** Token in query string
+- **Message:** Live updates when transactions change
+
+---
+
+### 📨 Email Task Status (Admin Only)
+
+- **URL:** `ws://<your-backend-host>/ws/email-status/`
+- **Auth:** Token (admin only)
+- **Message Types:**
+  ```json
+  {
+    "type": "initial_statuses",
+    "tasks": [{ "task_id": "...", "status": "...", "email": "..." }]
+  }
+  ```
+  **Live Task Updates:**
+  ```json
+  { "task_id": "...", "status": "queued | started | success | error", "email": "..." }
+  ```
+
+---
+
+### ⏑ Long Task Status (Admin Only)
+
+- **URL:** `ws://<your-backend-host>/ws/task_status/`
+- **Message Types:**
+  ```json
+  {
+    "type": "initial_statuses",
+    "tasks": [{ "task_id": "...", "status": "...", "name": "...", "execution_time": ..., "end_time": "..." }]
+  }
+  ```
+  **Live Task Updates:**
+  ```json
+  { "task_id": "...", "status": "queued | started | success | error", "name": "...", "execution_time": ..., "end_time": "..." }
+  ```
+
+---
+
+## 📆 REST API Summary
+
+| Method | Endpoint                      | Description                        |
+|--------|-------------------------------|------------------------------------|
+| POST   | `/exchanger/register/`        | Register new user and send email  |
+| POST   | `/exchanger/login/`           | User login, returns token         |
+| POST   | `/exchanger/logout/`          | Invalidate auth token             |
+| GET    | `/exchanger/balance/`         | Check balance                     |
+| POST   | `/exchanger/convert/`         | Convert currency                  |
+| GET    | `/exchanger/transactions/`    | Get last 5 transactions           |
+| POST   | `/exchanger/long_task/`       | Simulate async task (new!)        |
+
+---
+
+## ⚙️ Local Dev (No Docker)
+
+```bash
+cd back_end/lab1
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+python manage.py migrate
+uvicorn lab1.asgi:application --reload
+
+# Start Celery workers
+celery -A lab1.celery worker -Q default --loglevel=info
+celery -A lab1.celery worker -Q email_queue --loglevel=info
 ```
-> **Note:** For authenticated access, you may need a custom WebSocket client that sends the token as a header, or use a middleware that reads the token from a query parameter.
+
+---
+
+## 📁 Docker Overview
+
+Your app uses two `docker-compose` configs:
+- `docker-compose.yml`: Redis, Django, Channels, Celery
+- `docker-compose.queues.yml`: Separate workers for logic + email queues
+
+Each task type uses a distinct queue:
+- `email_queue` → sends email notifications
+- `default` → simulates long tasks
+
+Redis is used as:
+- Cache (via `django-redis`)
+- Celery broker
+- WebSocket channel backend (Channels)
+
+---
+
+## 🎯 Bonus: Custom Admin WebSocket Dashboard
+
+- Only visible to admins
+- React-based table with task info
+- Authenticated via token passed in WebSocket query
+- Dynamically updates as tasks complete
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests are welcome! Fork the repository and submit your improvements.
+Pull requests welcome!  
+Feel free to fork the project, create a branch and open a PR.
